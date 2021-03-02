@@ -17,3 +17,8 @@ where (rating = 'R' or rating = 'PG-13')
 
 -- the most expensive query is the except one, as it uses several joins
 -- adding an index on rental_id will optimize
+
+-- get best stores
+explain analyze
+select store_id, sum(amount) as total from payment p inner join staff s on p.staff_id = s.staff_id
+  group by store_id order by total desc
