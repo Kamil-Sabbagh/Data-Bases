@@ -13,17 +13,24 @@ cur.execute('''select get_addr();''')
 res = cur.fetchall()
 
 locator = Nominatim(user_agent="ahmed_123456")
+print(res)
+
+# Execute once to add the columns
+
+# cur.execute('''alter table address add column longitude float;''')
+# cur.execute('''alter table address add column latitude float;''')
 
 for i in res:
     location = locator.geocode(i[0])
-    if location is None:
-        print('0', '0')
-    else:
-        print(location.latitude, location.longitude)
+    lat = 0
+    lon = 0
+    if location is not None:
+        lat = location.latitude
+        lon = location.longitude
 
-# cur.execute('''alter table address add column longitude varchar(50);''')
-# cur.execute('''alter table address add column latitude varchar(50);''')
-for i in res:
-    cur.execute('''UPDATE address
-    SET longitude = ''' + str(location.longitude) + ''', latitude = ''' + str(location.latitude) + '''
-    WHERE address.address = \'''' + i[0] + '''\';''')
+    query = '''UPDATE address
+    SET longitude = ''' + str(lon) + ''', latitude = ''' + str(lat) + '''
+    WHERE address = \'''' + i[0] + '''\';'''
+    # print(query)
+    cur.execute(query)
+    con.commit()
