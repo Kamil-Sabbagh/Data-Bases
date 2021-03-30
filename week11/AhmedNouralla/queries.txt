@@ -1,0 +1,15 @@
+db.restaurant.find({})
+
+db.restaurant.find({},{
+   "restaurant_id": 1,
+   "name": 1,
+   "borough": 1,
+   "cuisine": 1
+})
+
+db.restaurant.find({borough :  "Bronx"})
+
+db.restaurant.find(
+  {borough: 'Bronx'}
+).limit(5)
+
